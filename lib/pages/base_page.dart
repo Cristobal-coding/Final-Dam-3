@@ -10,6 +10,5 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final usuario = Provider.of<User>(context);
     return usuario == null ? LoginPage() : MainNav();
-    // return RegisterPage();
   }
 }
