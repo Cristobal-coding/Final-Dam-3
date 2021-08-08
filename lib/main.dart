@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                   primaryColor: kPrimaryColor,
                   fontFamily: normalFontFamily,
                   scaffoldBackgroundColor: kBackgroundColor),
-              home: MainNav(),
+              home: BasePage(),
               // home: BasePage(),
             ),
           );

@@ -1,10 +1,12 @@
 import 'package:convex_bottom_navigation/convex_bottom_navigation.dart';
+import 'package:final_dam_3/components/side_menu.dart';
 import 'package:final_dam_3/constants.dart';
 import 'package:final_dam_3/pages/games.dart';
 import 'package:final_dam_3/pages/news.dart';
 import 'package:final_dam_3/pages/shopping.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainNav extends StatefulWidget {
   MainNav({Key key}) : super(key: key);
@@ -16,14 +18,42 @@ class MainNav extends StatefulWidget {
 class _MainNavState extends State<MainNav> {
   int _currentIndex = 0;
   List<Widget> _pages = [JuegosPage(), NoticiasPage(), ShopPage()];
+  String emailUser = '';
+
+  @override
+  void initState() {
+    this.cargarDatosUsuario();
+    super.initState();
+  }
+
+  Future cargarDatosUsuario() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      emailUser = sp.getStringList('user')[1];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideMenu(),
       appBar: AppBar(
         title: Text(
-          'Games Store',
+          '$emailUser',
           style: TextStyle(fontFamily: manuscritoFontFamily, fontSize: 28),
         ),
+
+        // leading: Icon(MdiIcons.firebase),
+        // actions: [
+        //   PopupMenuButton(
+        //     onSelected: (option) {
+        //       AuthService authService = new AuthService();
+        //       authService.cerrarSesion();
+        //     },
+        //     itemBuilder: (context) =>
+        //         [PopupMenuItem(value: 'salir', child: Text('Cerrar Sesion'))],
+        //   )
+        // ],
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: ConvexBottomNavigation(
