@@ -12,19 +12,18 @@ class _NoticiasPageState extends State<NoticiasPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: StreamBuilder(
-        stream: FireStoreService().productos(),
-        builder: (context,snapshot),{
-          if(!snapshot.hasData){
-            return Center(child:CircularProgressIndicator(),)
-        }
-        child: ListView(
-          children: [
-            
-          ],
-        ),
-      ),
-    );
-    
+        // child: StreamBuilder(
+        //   stream: FireStoreService().productos(),
+        //   builder: (context,snapshot),{
+        //     if(!snapshot.hasData){
+        //       return Center(child:CircularProgressIndicator(),)
+        //   }
+        //   child: ListView(
+        //     children: [
+
+        //     ],
+        //   ),
+        // ),
+        );
   }
 }

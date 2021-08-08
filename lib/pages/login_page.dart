@@ -1,4 +1,5 @@
 import 'package:final_dam_3/constants.dart';
+import 'package:final_dam_3/pages/register_page.dart';
 import 'package:final_dam_3/services/auth_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +178,9 @@ class _LoginPageState extends State<LoginPage> {
                             fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            print('abrir regist page');
+                            MaterialPageRoute route = new MaterialPageRoute(
+                                builder: (context) => RegisterPage());
+                            Navigator.push(context, route);
                           }),
                   ]),
                 ),
