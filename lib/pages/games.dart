@@ -122,7 +122,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                     LikeButton(
                                       onTap: (value) async {
                                         print('${juegos[index].id}');
-                                        return value;
+                                        return !value;
                                       },
                                       // onTap: onLikeButtonTapped,
                                     ),
