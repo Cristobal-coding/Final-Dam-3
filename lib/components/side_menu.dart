@@ -49,15 +49,19 @@ class _SideMenuState extends State<SideMenu> {
                       Container(
                         child: Text("Menu de usuario",
                             style: TextStyle(
-                                fontFamily: titulosFontFamily, fontSize: 25)),
+                                fontFamily: titulosFontFamily,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white)),
                       ),
                       Spacer(),
                       Container(
                           width: size.width * 0.75,
                           child: FittedBox(
                             child: Text(
-                              "Email: $emailUser",
-                              style: TextStyle(fontSize: 23),
+                              " $emailUser ",
+                              style:
+                                  TextStyle(fontSize: 23, color: Colors.white),
                             ),
                           )),
                       Spacer(),
@@ -73,8 +77,8 @@ class _SideMenuState extends State<SideMenu> {
             ),
             ListTile(
               onTap: () {},
-              title: Text("Item"),
-              leading: Icon(MdiIcons.sword),
+              title: Text("Mis noticias"),
+              leading: Icon(MdiIcons.newspaperVariantMultipleOutline),
             ),
             ListTile(
               onTap: () {},
@@ -87,7 +91,7 @@ class _SideMenuState extends State<SideMenu> {
                 authService.cerrarSesion();
               },
               title: Text("Cerrar Sesion"),
-              leading: Icon(MdiIcons.sword),
+              leading: Icon(MdiIcons.logout),
             )
           ],
         ),
