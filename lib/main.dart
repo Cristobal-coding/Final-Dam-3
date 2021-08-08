@@ -1,5 +1,6 @@
 import 'package:final_dam_3/pages/base_page.dart';
 import 'package:final_dam_3/pages/login_page.dart';
+import 'package:final_dam_3/pages/navegador.dart';
 import 'package:final_dam_3/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
                   primaryColor: kPrimaryColor,
                   fontFamily: normalFontFamily,
                   scaffoldBackgroundColor: kBackgroundColor),
-              home: BasePage(),
+              home: MainNav(),
+              // home: BasePage(),
             ),
           );
         });
