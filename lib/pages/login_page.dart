@@ -1,4 +1,5 @@
 import 'package:final_dam_3/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -41,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Center(
                     child: Column(
                       children: [
+                        Spacer(),
                         Text(
                           "Login Account",
                           style: TextStyle(
@@ -58,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                         //     ),
                         //   ),
                         // ),
+                        Spacer(),
                         TextField(
                           controller: emailCtrl,
                           keyboardType: TextInputType.emailAddress,
@@ -69,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                           decoration: InputDecoration(labelText: "Password"),
                         ),
+                        Spacer(),
                         Container(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -79,7 +83,14 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {},
                             child: Text("Ingresar"),
                           ),
-                        )
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: size.height * 0.1,
+                          child: Row(
+                            children: [Text("Iconos")],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -90,11 +101,25 @@ class _LoginPageState extends State<LoginPage> {
                   // ),
                 )),
             Container(
-                child: RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(text: "No tienes cuenta aún?"),
-                TextSpan(text: "Registrarse.")
-              ]),
+                child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: RichText(
+                text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                      text: "¿No tienes cuenta aún? ",
+                      style: TextStyle(color: Colors.black, fontSize: 15)),
+                  TextSpan(
+                      text: "Registrarse.",
+                      style: TextStyle(
+                          color: kSecondaryColor,
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          print('abrir regist page');
+                        }),
+                ]),
+              ),
             ))
           ]),
         ),
