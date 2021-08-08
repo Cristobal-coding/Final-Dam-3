@@ -1,4 +1,5 @@
 import 'package:final_dam_3/constants.dart';
+import 'package:final_dam_3/services/auth_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       // appBar: AppBar(
       //     title: Text(
@@ -26,10 +26,29 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(children: [
             Container(
-                height: size.height * 0.3,
                 width: double.infinity,
                 child: CustomPaint(painter: _HeaderPainter())),
-            Container(child: Text("Hola")),
+            Container(
+              width: size.width * 0.7,
+              height: size.height * 0.3,
+              child: Center(
+                  child: Column(children: [
+                Spacer(),
+                Text(
+                  "Games N' news",
+                  style: TextStyle(
+                      fontFamily: manuscritoFontFamily,
+                      fontSize: 60,
+                      // fontWeight: FontWeight.bold,
+                      color: kBackgroundColor),
+                ),
+                Text(
+                  "Tu fuente de videojuegos.",
+                  style: TextStyle(fontFamily: titulosFontFamily, fontSize: 20),
+                ),
+                Spacer()
+              ])),
+            ),
             Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(13),
@@ -80,7 +99,11 @@ class _LoginPageState extends State<LoginPage> {
                               shape: StadiumBorder(),
                               primary: kSecondaryColor,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              AuthService authService = new AuthService();
+                              authService.iniciarSesion(emailCtrl.text.trim(),
+                                  passwordCtrl.text.trim());
+                            },
                             child: Text("Ingresar"),
                           ),
                         ),
@@ -88,7 +111,16 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           height: size.height * 0.1,
                           child: Row(
-                            children: [Text("Iconos")],
+                            children: [
+                              // Container(
+                              //   width: 300,
+                              //   height: 100,
+                              //   decoration: BoxDecoration(
+                              //     shape: BoxShape.circle,
+                              //   ),
+                              //   child: Image.asset("assets\images\hongo.png"),
+                              // )
+                            ],
                           ),
                         ),
                       ],
@@ -134,11 +166,8 @@ class _HeaderPainter extends CustomPainter {
     final paint = Paint();
     paint.color = kPrimaryColor;
     paint.style = PaintingStyle.fill;
-    paint.strokeWidth = 10;
 
     final path = new Path();
-    // path.lineTo(0, size.height * 3);
-    // path.lineTo(size.width, size.height * 3);
     canvas.drawCircle(Offset(200, 200), 320, paint);
     canvas.drawPath(path, paint);
   }
