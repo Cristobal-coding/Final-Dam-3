@@ -18,28 +18,16 @@ class MainNav extends StatefulWidget {
 class _MainNavState extends State<MainNav> {
   int _currentIndex = 0;
   List<Widget> _pages = [JuegosPage(), NoticiasPage(), ShopPage()];
-  String emailUser = '';
-
-  @override
-  void initState() {
-    this.cargarDatosUsuario();
-    super.initState();
-  }
-
-  Future cargarDatosUsuario() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
-      emailUser = sp.getStringList('user')[1];
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       drawer: SideMenu(),
       appBar: AppBar(
         title: Text(
-          '$emailUser',
+          'Hola',
           style: TextStyle(fontFamily: manuscritoFontFamily, fontSize: 28),
         ),
 
