@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "377919100271",
+    "project_id": "finaldam3",
+    "storage_bucket": "finaldam3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377919100271:android:a131f04ab7f64ca012449a",
+        "android_client_info": {
+          "package_name": "cl.finalDAM3.final_dam_3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377919100271-4q9j9srdtdhllgbv7ivu243v57cnfai6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6n74rbKu509C2JOX_M8EdvWeNnIC_wSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377919100271-4q9j9srdtdhllgbv7ivu243v57cnfai6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
