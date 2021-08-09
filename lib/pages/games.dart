@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_dam_3/constants.dart';
 import 'package:final_dam_3/services/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuegosPage extends StatefulWidget {
   JuegosPage({Key key}) : super(key: key);
@@ -16,6 +18,22 @@ class _JuegosPageState extends State<JuegosPage> {
   FireStoreService juegos = FireStoreService();
   var formato =
       NumberFormat.currency(decimalDigits: 0, locale: 'es-CL', symbol: '');
+
+  String uid = '';
+
+  @override
+  void initState() {
+    this.cargarDatosUsuario();
+    super.initState();
+  }
+
+  Future cargarDatosUsuario() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      uid = sp.getStringList('user')[0];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,12 +137,33 @@ class _JuegosPageState extends State<JuegosPage> {
                                 ),
                                 Row(
                                   children: [
-                                    LikeButton(
-                                      onTap: (value) async {
-                                        print('${juegos[index].id}');
-                                        return !value;
+                                    StreamBuilder(
+                                      stream: FireStoreService()
+                                          .checkIsWish(juegos[index].id, uid),
+                                      builder: (context, snapshot) {
+                                        var deseos = snapshot.data.docs;
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        return LikeButton(
+                                          isLiked:
+                                              deseos.length == 0 ? false : true,
+                                          onTap: (value) async {
+                                            if (value == false) {
+                                              FireStoreService()
+                                                  .toListWish(juegos[index].id);
+                                            }
+                                            if (value == true) {
+                                              FireStoreService()
+                                                  .removeItemWish(deseos[0].id);
+                                            }
+                                            return !value;
+                                          },
+                                          // onTap: onLikeButtonTapped,
+                                        );
                                       },
-                                      // onTap: onLikeButtonTapped,
                                     ),
                                     Spacer(),
                                     Text(
@@ -152,15 +191,4 @@ class _JuegosPageState extends State<JuegosPage> {
       ),
     );
   }
-
-  // Future<dynamic> onLikeButtonTapped(String id) async {
-  //   /// send your request here
-  //   // final bool success= await sendRequest();
-
-  //   /// if failed, you can do nothing
-  //   // return success? !isLiked:isLiked;
-  //   print(isLiked);
-
-  //   return !isLiked;
-  // }
 }

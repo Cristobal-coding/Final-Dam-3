@@ -22,4 +22,16 @@ class FireStoreService {
       'uid': sp.getStringList('user')[0],
     });
   }
+
+  Future removeItemWish(String id) async {
+    FirebaseFirestore.instance.collection('deseos').doc(id).delete();
+  }
+
+  Stream<QuerySnapshot> checkIsWish(String id, uid) {
+    return FirebaseFirestore.instance
+        .collection('deseos')
+        .where('uid', isEqualTo: uid)
+        .where('id_producto', isEqualTo: id)
+        .snapshots();
+  }
 }
