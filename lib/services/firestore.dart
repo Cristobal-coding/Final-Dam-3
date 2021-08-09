@@ -84,6 +84,24 @@ class FireStoreService {
     });
   }
 
+  Future addCompraFromWish(
+    String id,
+    idDeseo,
+    int costo,
+    bool isGame,
+  ) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    FirebaseFirestore.instance.collection('compras').doc().set({
+      'fecha': DateTime.now(),
+      'id_juego': id,
+      'uid': sp.getStringList('user')[0],
+      'cost': costo,
+      'isGame': isGame,
+    });
+
+    removeItemWish(idDeseo);
+  }
+
   Stream<QuerySnapshot> getItemById(String idProd, bool tipo) {
     if (tipo) {
       return FirebaseFirestore.instance
