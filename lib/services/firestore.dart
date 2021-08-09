@@ -34,4 +34,16 @@ class FireStoreService {
         .where('id_producto', isEqualTo: id)
         .snapshots();
   }
+
+  Future addNew(String titulo, url, descripcion, bool hidden) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    FirebaseFirestore.instance.collection('news').doc().set({
+      'fecha': DateTime.now(),
+      'descripcion': descripcion,
+      'img': url,
+      'titulo': titulo,
+      'hidden': hidden,
+      'uid': sp.getStringList('user')[0],
+    });
+  }
 }
