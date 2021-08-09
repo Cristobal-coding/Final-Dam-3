@@ -135,17 +135,17 @@ class _JuegosPageState extends State<JuegosPage> {
                                     ),
                                   ],
                                 ),
-                                Container(
+                                Flexible(
                                   child: StreamBuilder(
                                     stream: FireStoreService()
                                         .checkIsWish(juegos[index].id, uid),
                                     builder: (context, snapshot) {
-                                      var deseos = snapshot.data.docs;
                                       if (!snapshot.hasData) {
                                         return Center(
                                             child: CircularProgressIndicator());
                                       }
-                                      return Column(
+                                      var deseos = snapshot.data.docs;
+                                      return Row(
                                         children: [
                                           LikeButton(
                                             isLiked: deseos.length == 0
