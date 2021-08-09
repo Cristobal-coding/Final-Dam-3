@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
             initialData: null,
             value: AuthService().usuario,
             child: MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: 'Videogames App',
               theme: ThemeData(
                   primaryColor: kPrimaryColor,

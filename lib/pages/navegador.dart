@@ -16,7 +16,7 @@ class MainNav extends StatefulWidget {
 }
 
 class _MainNavState extends State<MainNav> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Widget> _pages = [JuegosPage(), NoticiasPage(), ShopPage()];
 
   @override
@@ -27,21 +27,9 @@ class _MainNavState extends State<MainNav> {
       drawer: SideMenu(),
       appBar: AppBar(
         title: Text(
-          'Hola',
-          style: TextStyle(fontFamily: manuscritoFontFamily, fontSize: 28),
+          'Game Store',
+          style: TextStyle(fontFamily: manuscritoFontFamily, fontSize: 32),
         ),
-
-        // leading: Icon(MdiIcons.firebase),
-        // actions: [
-        //   PopupMenuButton(
-        //     onSelected: (option) {
-        //       AuthService authService = new AuthService();
-        //       authService.cerrarSesion();
-        //     },
-        //     itemBuilder: (context) =>
-        //         [PopupMenuItem(value: 'salir', child: Text('Cerrar Sesion'))],
-        //   )
-        // ],
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: ConvexBottomNavigation(
