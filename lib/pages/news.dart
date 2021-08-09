@@ -1,4 +1,5 @@
 import 'package:final_dam_3/constants.dart';
+import 'package:final_dam_3/pages/add_noticias.dart';
 import 'package:final_dam_3/services/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +22,7 @@ class _NoticiasPageState extends State<NoticiasPage> {
           child: Stack(children: [
             Expanded(
               child: StreamBuilder(
-                  stream: FireStoreService().noticias(),
+                  stream: FireStoreService().allNoticias(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
@@ -33,7 +34,7 @@ class _NoticiasPageState extends State<NoticiasPage> {
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {
                         var noticia = snapshot.data.docs[index];
-                        if (!noticia['hidden']) {
+                        if (noticia['hidden'] == false) {
                           return Container(
                             width: double.infinity,
                             height: size.height * 0.4,
@@ -125,12 +126,14 @@ class _NoticiasPageState extends State<NoticiasPage> {
                 child: Container(
                   child: FloatingActionButton(
                     onPressed: () {
-                      // Add your onPressed code here!
+                      MaterialPageRoute route = new MaterialPageRoute(
+                          builder: (context) => AddNoticiasPage());
+                      Navigator.push(context, route);
                     },
                     child: Icon(
                       Icons.add,
                     ),
-                    backgroundColor: Colors.pink,
+                    backgroundColor: Colors.pink.withOpacity(0.5),
                   ),
                 ),
               ),

@@ -6,8 +6,15 @@ class FireStoreService {
     return FirebaseFirestore.instance.collection('juegos').snapshots();
   }
 
-  Stream<QuerySnapshot> noticias() {
+  Stream<QuerySnapshot> allNoticias() {
     return FirebaseFirestore.instance.collection('news').snapshots();
+  }
+
+  Stream<QuerySnapshot> myNoticias(String uid) {
+    return FirebaseFirestore.instance
+        .collection('news')
+        .where('uid', isEqualTo: uid)
+        .snapshots();
   }
 
   Stream<QuerySnapshot> hardware() {
@@ -60,6 +67,10 @@ class FireStoreService {
       'hidden': hidden,
       'uid': sp.getStringList('user')[0],
     });
+  }
+
+  Future borrarNew(String noticiaId) async {
+    FirebaseFirestore.instance.collection('news').doc(noticiaId).delete();
   }
 
   Future addCompra(String id, int costo, bool isGame) async {
