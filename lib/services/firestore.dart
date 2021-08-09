@@ -17,6 +17,17 @@ class FireStoreService {
         .snapshots();
   }
 
+  updateNew(String id, titulo, descripcion, img, bool hidden) {
+    FirebaseFirestore.instance.doc('news/$id').update({
+      'titulo': titulo,
+      'descripcion': descripcion,
+      'img': img,
+      'hidden': hidden
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
   Stream<QuerySnapshot> hardware() {
     return FirebaseFirestore.instance.collection('hardware').snapshots();
   }
