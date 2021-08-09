@@ -208,6 +208,8 @@ class _JuegosPageState extends State<JuegosPage> {
           Container(
             width: double.infinity,
             height: size.height * 0.22,
+            // color: Colors.red,
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: StreamBuilder(
               stream: FireStoreService().hardware(),
               builder: (context, snapshot) {
@@ -220,25 +222,125 @@ class _JuegosPageState extends State<JuegosPage> {
                   itemCount: hardwares.length,
                   itemBuilder: (context, index) {
                     return Container(
-                        width: 240,
-                        margin: EdgeInsets.all(5.0),
-                        height: size.height * 0.15,
-                        // color: Colors.red,
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.network(
-                                hardwares[index]['img'],
-                                width: 240,
-                                height: 130,
-                                fit: BoxFit.fitWidth,
-                                // width: double.infinity,
+                      width: 240,
+                      margin: EdgeInsets.all(5.0),
+                      height: size.height * 0.15,
+                      // color: Colors.red,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: Image.network(
+                                  hardwares[index]['img'],
+                                  width: 240,
+                                  height: 130,
+                                  fit: BoxFit.fitWidth,
+                                  // width: double.infinity,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 6,
+                                right: 7,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                  width: 100,
+                                  height: 17,
+                                  child: Text(
+                                    hardwares[index]['tipo'],
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 12),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 0),
+                            child: Text(
+                              hardwares[index]['nombre'],
+                              style: TextStyle(
+                                fontFamily: titulosFontFamily,
+                                fontSize: 16,
                               ),
                             ),
-                            Text(hardwares[index]['nombre']),
-                          ],
-                        ));
+                          ),
+                          Flexible(
+                            child: StreamBuilder(
+                              stream: FireStoreService()
+                                  .checkIsWish(hardwares[index].id, uid),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                var deseos = snapshot.data.docs;
+                                return Row(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: LikeButton(
+                                        isLiked:
+                                            deseos.length == 0 ? false : true,
+                                        onTap: (value) async {
+                                          if (value == false) {
+                                            FireStoreService().toListWish(
+                                                hardwares[index].id);
+                                          }
+                                          if (value == true) {
+                                            FireStoreService()
+                                                .removeItemWish(deseos[0].id);
+                                          }
+                                          return !value;
+                                        },
+                                        // onTap: onLikeButtonTapped,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      '\$${formato.format(hardwares[index]['precio'])}',
+                                      style: TextStyle(
+                                        fontFamily: manuscritoFontFamily,
+                                        fontSize: 18,
+                                        color: kSecondaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    // IconButton(
+                                    //   icon: Icon(MdiIcons.shopping),
+                                    //   onPressed: () {},
+                                    // )
+                                    LikeButton(
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          MdiIcons.cart,
+                                          color: isLiked
+                                              ? kPrimaryColor
+                                              : Colors.grey,
+                                          size: 32,
+                                        );
+                                      },
+                                      onTap: (value) async {
+                                        return !value;
+                                      },
+                                    )
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 );
               },
