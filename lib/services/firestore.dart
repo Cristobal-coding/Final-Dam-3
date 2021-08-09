@@ -68,6 +68,14 @@ class FireStoreService {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> checkIsSold(String id, uid) {
+    return FirebaseFirestore.instance
+        .collection('compras')
+        .where('uid', isEqualTo: uid)
+        .where('id_juego', isEqualTo: id)
+        .snapshots();
+  }
+
   Future addNew(String titulo, url, descripcion, bool hidden) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     FirebaseFirestore.instance.collection('news').doc().set({

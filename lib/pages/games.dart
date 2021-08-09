@@ -85,6 +85,63 @@ class _JuegosPageState extends State<JuegosPage> {
                                 ),
                               ),
                               Positioned(
+                                  top: 10,
+                                  left: 10,
+                                  child: Container(
+                                    child: StreamBuilder(
+                                      stream: FireStoreService()
+                                          .checkIsSold(juegos[index].id, uid),
+                                      builder: (context, snapshotDos) {
+                                        if (!snapshotDos.hasData) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+
+                                        var elemento = snapshotDos.data.docs;
+                                        return Visibility(
+                                          visible: elemento.length == 0
+                                              ? false
+                                              : true,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                color: kGreenColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0)),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 3),
+                                                  child: Icon(
+                                                    MdiIcons.star,
+                                                    color: Colors.yellow,
+                                                    size: 17,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5),
+                                                  child: Text(
+                                                    'Adquirido',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )),
+                              Positioned(
                                 bottom: 10,
                                 left: 7,
                                 child: Container(
@@ -189,10 +246,55 @@ class _JuegosPageState extends State<JuegosPage> {
                                               );
                                             },
                                             onTap: (value) async {
-                                              FireStoreService().addCompra(
-                                                  juegos[index].id,
-                                                  juegos[index]['precio'],
-                                                  true);
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        AlertDialog(
+                                                  title:
+                                                      Text("Confirmar Compra"),
+                                                  content: Text(
+                                                      "¿Estas seguro de comprar el juego ${juegos[index]['nombre']} ?"),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(context,
+                                                              'Cancel'),
+                                                      child: const Text(
+                                                        'Cancel',
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        FireStoreService()
+                                                            .addCompra(
+                                                                juegos[index]
+                                                                    .id,
+                                                                juegos[index]
+                                                                    ['precio'],
+                                                                true);
+                                                        Navigator.pop(
+                                                            context, 'OK');
+                                                        // Navigator.pop(context, 'OK');
+                                                      },
+                                                      child: const Text(
+                                                        'Si, seguro',
+                                                        style: TextStyle(
+                                                            color: kGreenColor,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+
                                               return !value;
                                             },
                                           ),
@@ -259,6 +361,59 @@ class _JuegosPageState extends State<JuegosPage> {
                                   height: 130,
                                   fit: BoxFit.fitWidth,
                                   // width: double.infinity,
+                                ),
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: 10,
+                                child: Container(
+                                  child: StreamBuilder(
+                                    stream: FireStoreService()
+                                        .checkIsSold(hardwares[index].id, uid),
+                                    builder: (context, snapshotDos) {
+                                      if (!snapshotDos.hasData) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+
+                                      var elemento = snapshotDos.data.docs;
+                                      return Visibility(
+                                        visible:
+                                            elemento.length == 0 ? false : true,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: kGreenColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0)),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 3),
+                                                child: Icon(
+                                                  MdiIcons.star,
+                                                  color: Colors.yellow,
+                                                  size: 17,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5),
+                                                child: Text(
+                                                  'Adquirido',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               Positioned(
@@ -333,28 +488,65 @@ class _JuegosPageState extends State<JuegosPage> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    // IconButton(
-                                    //   icon: Icon(MdiIcons.shopping),
-                                    //   onPressed: () {},
-                                    // )
-                                    showComponent(hardwares[index].id, 0,
-                                        hardwares[index]['precio'], false),
-                                    // LikeButton(
-                                    //   likeBuilder: (bool isLiked) {
-                                    //     return Icon(
-                                    //       MdiIcons.cart,
-                                    //       color: isLiked
-                                    //           ? Colors.deepPurpleAccent
-                                    //           : Colors.grey,
-                                    //       size: 32,
-                                    //     );
-                                    //   },
-                                    //   onTap: (value) async {
-                                    //     FireStoreService()
-                                    //         .addCompra(hardwares[index].id);
-                                    //     return !value;
-                                    //   },
-                                    // )
+                                    LikeButton(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          MdiIcons.cart,
+                                          color: isLiked
+                                              ? Colors.deepPurpleAccent
+                                              : Colors.grey,
+                                          size: 32,
+                                        );
+                                      },
+                                      onTap: (value) async {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: Text("Confirmar Compra"),
+                                            content: Text(
+                                                "¿Estas seguro de comprar el artículo ${hardwares[index]['nombre']} ?"),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                      context, 'Cancel');
+                                                },
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  FireStoreService().addCompra(
+                                                      hardwares[index].id,
+                                                      hardwares[index]
+                                                          ['precio'],
+                                                      false);
+                                                  Navigator.pop(context, 'OK');
+                                                  // Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text(
+                                                  'Si, seguro',
+                                                  style: TextStyle(
+                                                      color: kGreenColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        return !value;
+                                      },
+                                    ),
                                   ],
                                 );
                               },
@@ -371,32 +563,5 @@ class _JuegosPageState extends State<JuegosPage> {
         ],
       ),
     );
-  }
-
-  showComponent(String idItem, counted, int costo, bool isGame) {
-    if (counted == 0) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 3.0),
-        child: LikeButton(
-          mainAxisAlignment: MainAxisAlignment.center,
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              MdiIcons.cart,
-              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-              size: 32,
-            );
-          },
-          onTap: (value) async {
-            FireStoreService().addCompra(idItem, costo, isGame);
-            return !value;
-          },
-        ),
-      );
-    } else {
-      return Icon(
-        MdiIcons.cart,
-        color: Colors.red,
-      );
-    }
   }
 }
