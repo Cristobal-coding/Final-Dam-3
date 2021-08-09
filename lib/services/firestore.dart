@@ -46,4 +46,16 @@ class FireStoreService {
       'uid': sp.getStringList('user')[0],
     });
   }
+
+  Future addCompra(String id) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    FirebaseFirestore.instance.collection('compras').doc().set({
+      'fecha': DateTime.now(),
+      'id_juego': id,
+      'uid': sp.getStringList('user')[0],
+    });
+  }
+  // Future removeItemWish(String id) async {
+  //   FirebaseFirestore.instance.collection('deseos').doc(id).delete();
+  // }
 }

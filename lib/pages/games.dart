@@ -319,20 +319,23 @@ class _JuegosPageState extends State<JuegosPage> {
                                     //   icon: Icon(MdiIcons.shopping),
                                     //   onPressed: () {},
                                     // )
-                                    LikeButton(
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          MdiIcons.cart,
-                                          color: isLiked
-                                              ? kPrimaryColor
-                                              : Colors.grey,
-                                          size: 32,
-                                        );
-                                      },
-                                      onTap: (value) async {
-                                        return !value;
-                                      },
-                                    )
+                                    showComponent(hardwares[index].id, 0),
+                                    // LikeButton(
+                                    //   likeBuilder: (bool isLiked) {
+                                    //     return Icon(
+                                    //       MdiIcons.cart,
+                                    //       color: isLiked
+                                    //           ? Colors.deepPurpleAccent
+                                    //           : Colors.grey,
+                                    //       size: 32,
+                                    //     );
+                                    //   },
+                                    //   onTap: (value) async {
+                                    //     FireStoreService()
+                                    //         .addCompra(hardwares[index].id);
+                                    //     return !value;
+                                    //   },
+                                    // )
                                   ],
                                 );
                               },
@@ -349,5 +352,32 @@ class _JuegosPageState extends State<JuegosPage> {
         ],
       ),
     );
+  }
+
+  showComponent(String idItem, counted) {
+    if (counted == 0) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 3.0),
+        child: LikeButton(
+          mainAxisAlignment: MainAxisAlignment.center,
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              MdiIcons.cart,
+              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+              size: 32,
+            );
+          },
+          onTap: (value) async {
+            // FireStoreService().addCompra(idItem);
+            return !value;
+          },
+        ),
+      );
+    } else {
+      return Icon(
+        MdiIcons.cart,
+        color: Colors.red,
+      );
+    }
   }
 }
