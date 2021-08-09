@@ -135,46 +135,50 @@ class _JuegosPageState extends State<JuegosPage> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    StreamBuilder(
-                                      stream: FireStoreService()
-                                          .checkIsWish(juegos[index].id, uid),
-                                      builder: (context, snapshot) {
-                                        var deseos = snapshot.data.docs;
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-                                        return LikeButton(
-                                          isLiked:
-                                              deseos.length == 0 ? false : true,
-                                          onTap: (value) async {
-                                            if (value == false) {
-                                              FireStoreService()
-                                                  .toListWish(juegos[index].id);
-                                            }
-                                            if (value == true) {
-                                              FireStoreService()
-                                                  .removeItemWish(deseos[0].id);
-                                            }
-                                            return !value;
-                                          },
-                                          // onTap: onLikeButtonTapped,
-                                        );
-                                      },
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      '\$${formato.format(juegos[index]['precio'])}',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: manuscritoFontFamily,
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor),
-                                    )
-                                  ],
+                                Container(
+                                  child: StreamBuilder(
+                                    stream: FireStoreService()
+                                        .checkIsWish(juegos[index].id, uid),
+                                    builder: (context, snapshot) {
+                                      var deseos = snapshot.data.docs;
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      return Column(
+                                        children: [
+                                          LikeButton(
+                                            isLiked: deseos.length == 0
+                                                ? false
+                                                : true,
+                                            onTap: (value) async {
+                                              if (value == false) {
+                                                FireStoreService().toListWish(
+                                                    juegos[index].id);
+                                              }
+                                              if (value == true) {
+                                                FireStoreService()
+                                                    .removeItemWish(
+                                                        deseos[0].id);
+                                              }
+                                              return !value;
+                                            },
+                                            // onTap: onLikeButtonTapped,
+                                          ),
+                                          Spacer(),
+                                          Text(
+                                            '\$${formato.format(juegos[index]['precio'])}',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily:
+                                                    manuscritoFontFamily,
+                                                fontWeight: FontWeight.bold,
+                                                color: kSecondaryColor),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 )
                               ],
                             ),
