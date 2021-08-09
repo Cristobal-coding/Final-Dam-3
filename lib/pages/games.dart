@@ -155,7 +155,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                             onTap: (value) async {
                                               if (value == false) {
                                                 FireStoreService().toListWish(
-                                                    juegos[index].id);
+                                                    juegos[index].id, true);
                                               }
                                               if (value == true) {
                                                 FireStoreService()
@@ -313,7 +313,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                         onTap: (value) async {
                                           if (value == false) {
                                             FireStoreService().toListWish(
-                                                hardwares[index].id);
+                                                hardwares[index].id, false);
                                           }
                                           if (value == true) {
                                             FireStoreService()

@@ -28,12 +28,13 @@ class FireStoreService {
         .snapshots();
   }
 
-  Future toListWish(String idProd) async {
+  Future toListWish(String idProd, bool isGame) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     FirebaseFirestore.instance.collection('deseos').doc().set({
       'añadido': DateTime.now(),
       'id_producto': idProd,
       'uid': sp.getStringList('user')[0],
+      'isGame': isGame,
     });
   }
 

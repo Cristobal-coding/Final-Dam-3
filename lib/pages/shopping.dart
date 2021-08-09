@@ -1,6 +1,8 @@
+import 'package:final_dam_3/constants.dart';
 import 'package:final_dam_3/services/firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShopPage extends StatefulWidget {
@@ -12,6 +14,9 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   String uid = '';
+  var formato =
+      NumberFormat.currency(decimalDigits: 0, locale: 'es-CL', symbol: '');
+  var dateFormat = new DateFormat('dd-MM-yyyy kk:mm');
 
   @override
   void initState() {
@@ -31,12 +36,25 @@ class _ShopPageState extends State<ShopPage> {
     Size size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: size.height * 0.4,
-      // color: Colors.red,
+      // height: size.height * 0.40,
+      // color: Colors.blue,
       child: Column(
         children: [
           Container(
-            // width: double.infinity,
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                MdiIcons.currencyUsd,
+                color: kGreenColor,
+              ),
+              Text(
+                'Articulos comprados',
+                style: TextStyle(fontSize: 23, fontFamily: titulosFontFamily),
+              ),
+            ],
+          )),
+          Container(
             height: size.height * 0.4,
             child: StreamBuilder(
               stream: FireStoreService().comprasByUid(uid),
@@ -45,11 +63,16 @@ class _ShopPageState extends State<ShopPage> {
                   return Center(child: CircularProgressIndicator());
                 }
                 var compras = snapshot.data.docs;
+                if (compras.length == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Text('Aun no has comprado ningún articulo'),
+                  );
+                }
                 return ListView.separated(
                   itemCount: compras.length,
                   separatorBuilder: (_, __) => Divider(),
                   itemBuilder: (context, index) {
-                    // print(compras[index]['id_juego']);
                     return StreamBuilder(
                       stream: FireStoreService().getItemById(
                           compras[index]['id_juego'], compras[index]['isGame']),
@@ -58,14 +81,35 @@ class _ShopPageState extends State<ShopPage> {
                           return Center(child: CircularProgressIndicator());
                         }
                         var compra = snapshotTwo.data.docs;
-                        print(compra);
                         return ListTile(
-                          title: Text('${compra[0]['nombre']}'),
-                          // title: compras[index]['isGame']
-                          //     ? Text('Juego')
-                          //     : Text('HardWare'),
-                          subtitle: Text('${compras[index]['cost']}'),
-                          trailing: Text('${compras[index]['cost']}'),
+                          title: Text(
+                            '${compra[0]['nombre']}',
+                            style: TextStyle(fontFamily: titulosFontFamily),
+                          ),
+                          subtitle: compras[index]['isGame'] == true
+                              ? Text(
+                                  'Desarrollador: ${compra[0]['desarrollador']}')
+                              : Text('Tipo: ${compra[0]['tipo']}'),
+                          trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                '-\$${formato.format(compras[index]['cost'])}',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontFamily: manuscritoFontFamily,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                '${dateFormat.format(DateTime.parse(compras[index]['fecha'].toDate().toString()))}',
+                                style: TextStyle(
+                                  fontFamily: titulosFontFamily,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       },
                     );
@@ -73,7 +117,71 @@ class _ShopPageState extends State<ShopPage> {
                 );
               },
             ),
-          )
+          ),
+          Container(
+              padding: EdgeInsets.all(8.0),
+              height: size.height * 0.05,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    MdiIcons.heart,
+                    color: Colors.red,
+                  ),
+                  Text(
+                    'Lista de deseos',
+                    style:
+                        TextStyle(fontSize: 23, fontFamily: titulosFontFamily),
+                  ),
+                ],
+              )),
+          Container(
+            height: size.height * 0.30,
+            // color: Colors.red,
+            child: StreamBuilder(
+              stream: FireStoreService().deseosByUid(uid),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                var deseos = snapshot.data.docs;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: deseos.length,
+                  itemBuilder: (context, index) {
+                    return StreamBuilder(
+                      stream: FireStoreService().getItemById(
+                          deseos[index]['id_producto'],
+                          deseos[index]['isGame']),
+                      builder: (context, snapshotTwo) {
+                        if (!snapshotTwo.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        var deseo = snapshotTwo.data.docs;
+                        return Container(
+                          height: size.height * 0.25,
+                          margin: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: Image.network(
+                                  deseo[0]['img'],
+                                  width: 200,
+                                  height: 250,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
