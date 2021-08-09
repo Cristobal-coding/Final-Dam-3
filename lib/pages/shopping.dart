@@ -59,7 +59,8 @@ class _ShopPageState extends State<ShopPage> {
             child: StreamBuilder(
               stream: FireStoreService().comprasByUid(uid),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (!snapshot.hasData ||
+                    snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
                 var compras = snapshot.data.docs;
@@ -77,7 +78,9 @@ class _ShopPageState extends State<ShopPage> {
                       stream: FireStoreService().getItemById(
                           compras[index]['id_juego'], compras[index]['isGame']),
                       builder: (context, snapshotTwo) {
-                        if (!snapshotTwo.hasData) {
+                        if (!snapshotTwo.hasData ||
+                            snapshotTwo.connectionState ==
+                                ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
                         var compra = snapshotTwo.data.docs;
@@ -136,7 +139,7 @@ class _ShopPageState extends State<ShopPage> {
                 ],
               )),
           Container(
-            height: size.height * 0.30,
+            height: size.height * 0.32,
             // color: Colors.red,
             child: StreamBuilder(
               stream: FireStoreService().deseosByUid(uid),
@@ -145,6 +148,12 @@ class _ShopPageState extends State<ShopPage> {
                   return Center(child: CircularProgressIndicator());
                 }
                 var deseos = snapshot.data.docs;
+                if (deseos.length == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Text('No hay elementos en la Lista de deseos'),
+                  );
+                }
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: deseos.length,
@@ -163,15 +172,46 @@ class _ShopPageState extends State<ShopPage> {
                           margin: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(30.0),
-                                child: Image.network(
-                                  deseo[0]['img'],
-                                  width: 200,
-                                  height: 250,
-                                  fit: BoxFit.fill,
-                                ),
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: Image.network(
+                                      deseo[0]['img'],
+                                      width: 200,
+                                      height: 220,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        MdiIcons.closeCircle,
+                                        size: 35,
+                                        color: kSecondaryColor,
+                                      ),
+                                      onPressed: () {
+                                        FireStoreService()
+                                            .removeItemWish(deseos[index].id);
+                                      },
+                                    ),
+                                  )
+                                ],
                               ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor),
+                                onPressed: () {
+                                  FireStoreService().addCompraFromWish(
+                                      deseo[0].id,
+                                      deseos[index].id,
+                                      deseo[0]['precio'],
+                                      deseos[index]['isGame']);
+                                },
+                                child: Text(
+                                    'Comprar \$${formato.format(deseo[0]['precio'])}'),
+                              )
                             ],
                           ),
                         );
