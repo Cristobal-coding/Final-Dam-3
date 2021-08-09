@@ -203,11 +203,45 @@ class _ShopPageState extends State<ShopPage> {
                                 style: ElevatedButton.styleFrom(
                                     primary: kPrimaryColor),
                                 onPressed: () {
-                                  FireStoreService().addCompraFromWish(
-                                      deseo[0].id,
-                                      deseos[index].id,
-                                      deseo[0]['precio'],
-                                      deseos[index]['isGame']);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      title: Text("Confirmar Compra"),
+                                      content: Text(
+                                          "¿Estas seguro de comprar el artículo ${deseo[index]['nombre']} ?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            FireStoreService()
+                                                .addCompraFromWish(
+                                                    deseo[0].id,
+                                                    deseos[index].id,
+                                                    deseo[0]['precio'],
+                                                    deseos[index]['isGame']);
+                                            Navigator.pop(context, 'OK');
+                                            // Navigator.pop(context, 'OK');
+                                          },
+                                          child: const Text(
+                                            'Si, seguro',
+                                            style: TextStyle(
+                                                color: kGreenColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                     'Comprar \$${formato.format(deseo[0]['precio'])}'),
