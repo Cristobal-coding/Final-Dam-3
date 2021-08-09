@@ -14,6 +14,20 @@ class FireStoreService {
     return FirebaseFirestore.instance.collection('hardware').snapshots();
   }
 
+  Stream<QuerySnapshot> comprasByUid(String uid) {
+    return FirebaseFirestore.instance
+        .collection('compras')
+        .where('uid', isEqualTo: uid)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> deseosByUid(String uid) {
+    return FirebaseFirestore.instance
+        .collection('deseos')
+        .where('uid', isEqualTo: uid)
+        .snapshots();
+  }
+
   Future toListWish(String idProd) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     FirebaseFirestore.instance.collection('deseos').doc().set({
@@ -47,15 +61,28 @@ class FireStoreService {
     });
   }
 
-  Future addCompra(String id) async {
+  Future addCompra(String id, int costo, bool isGame) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     FirebaseFirestore.instance.collection('compras').doc().set({
       'fecha': DateTime.now(),
       'id_juego': id,
       'uid': sp.getStringList('user')[0],
+      'cost': costo,
+      'isGame': isGame,
     });
   }
-  // Future removeItemWish(String id) async {
-  //   FirebaseFirestore.instance.collection('deseos').doc(id).delete();
-  // }
+
+  Stream<QuerySnapshot> getItemById(String idProd, bool tipo) {
+    if (tipo) {
+      return FirebaseFirestore.instance
+          .collection('juegos')
+          .where(FieldPath.documentId, isEqualTo: idProd)
+          .snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection('hardware')
+          .where(FieldPath.documentId, isEqualTo: idProd)
+          .snapshots();
+    }
+  }
 }

@@ -16,7 +16,7 @@ class MainNav extends StatefulWidget {
 }
 
 class _MainNavState extends State<MainNav> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   List<Widget> _pages = [JuegosPage(), NoticiasPage(), ShopPage()];
 
   @override
