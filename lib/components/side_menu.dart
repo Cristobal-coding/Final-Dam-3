@@ -1,4 +1,5 @@
 import 'package:final_dam_3/constants.dart';
+import 'package:final_dam_3/pages/mis_noticias.dart';
 import 'package:final_dam_3/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +17,7 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
   String emailUser = '';
+  String userId = '';
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _SideMenuState extends State<SideMenu> {
   Future cargarDatosUsuario() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
+      userId = sp.getStringList('user')[0];
       emailUser = sp.getStringList('user')[1];
     });
   }
@@ -76,7 +79,11 @@ class _SideMenuState extends State<SideMenu> {
                   )),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                MaterialPageRoute route = new MaterialPageRoute(
+                    builder: (context) => MisNoticiasPage(uid: userId));
+                Navigator.push(context, route);
+              },
               title: Text("Mis noticias"),
               leading: Icon(MdiIcons.newspaperVariantMultipleOutline),
             ),
