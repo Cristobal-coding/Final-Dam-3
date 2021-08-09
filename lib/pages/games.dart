@@ -36,10 +36,12 @@ class _JuegosPageState extends State<JuegosPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       child: Column(
         children: [
           Container(
+            height: size.height * 0.05,
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -50,10 +52,11 @@ class _JuegosPageState extends State<JuegosPage> {
                   color: kSecondaryColor),
             ),
           ),
+          //Inicio de los juego
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(8.0),
-            height: 500,
+            height: size.height * 0.5,
             child: StreamBuilder(
               stream: FireStoreService().juegos(),
               builder: (context, snapshot) {
@@ -69,7 +72,6 @@ class _JuegosPageState extends State<JuegosPage> {
                       margin: EdgeInsets.all(3.0),
                       width: 240,
                       height: double.infinity,
-                      // color: Colors.red,
                       child: Column(
                         children: [
                           Stack(
@@ -78,7 +80,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.network(
                                   juegos[index]['img'],
-                                  height: 330,
+                                  height: 320,
                                   // width: double.infinity,
                                 ),
                               ),
@@ -103,9 +105,8 @@ class _JuegosPageState extends State<JuegosPage> {
                           ),
                           Container(
                             width: 250,
-                            height: 100,
+                            height: 90,
                             padding: EdgeInsets.all(10.0),
-                            // color: Colors.red,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -190,7 +191,59 @@ class _JuegosPageState extends State<JuegosPage> {
                 );
               },
             ),
+          ), //Fin de los juego
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(8.0),
+            height: size.height * 0.05,
+            child: Text(
+              'Articulos de Hardware',
+              style: TextStyle(
+                  fontFamily: titulosFontFamily,
+                  fontSize: 25,
+                  color: kSecondaryColor),
+            ),
           ),
+          //Inicio del Hardware
+          Container(
+            width: double.infinity,
+            height: size.height * 0.22,
+            child: StreamBuilder(
+              stream: FireStoreService().hardware(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                var hardwares = snapshot.data.docs;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: hardwares.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                        width: 240,
+                        margin: EdgeInsets.all(5.0),
+                        height: size.height * 0.15,
+                        // color: Colors.red,
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.network(
+                                hardwares[index]['img'],
+                                width: 240,
+                                height: 130,
+                                fit: BoxFit.fitWidth,
+                                // width: double.infinity,
+                              ),
+                            ),
+                            Text(hardwares[index]['nombre']),
+                          ],
+                        ));
+                  },
+                );
+              },
+            ),
+          ) //Fin del Hardware
         ],
       ),
     );

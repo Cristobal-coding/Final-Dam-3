@@ -49,7 +49,7 @@ class _MainNavState extends State<MainNav> {
         inactiveIconColor: Colors.grey,
         textColor: kSecondaryColor,
         bigIconPadding: 15.0,
-        circleSize: CircleSize.BIG,
+        circleSize: CircleSize.SMALL,
         smallIconPadding: 10.0,
         circleColor: Colors.white,
         tabs: [
