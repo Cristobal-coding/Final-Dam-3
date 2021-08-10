@@ -122,6 +122,7 @@ class _ShopPageState extends State<ShopPage> {
               },
             ),
           ),
+          Spacer(),
           Container(
               padding: EdgeInsets.all(8.0),
               height: size.height * 0.05,
@@ -169,7 +170,7 @@ class _ShopPageState extends State<ShopPage> {
                         }
                         var deseo = snapshotTwo.data.docs;
                         return Container(
-                          height: size.height * 0.2,
+                          height: size.height * 0.1,
                           margin: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
                             children: [

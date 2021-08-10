@@ -93,9 +93,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                           .checkIsSold(juegos[index].id, uid),
                                       builder: (context, snapshotDos) {
                                         if (!snapshotDos.hasData) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
+                                          return Text("");
                                         }
 
                                         var elemento = snapshotDos.data.docs;
@@ -199,8 +197,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                         .checkIsWish(juegos[index].id, uid),
                                     builder: (context, snapshot) {
                                       if (!snapshot.hasData) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
+                                        return Text("");
                                       }
                                       var deseos = snapshot.data.docs;
                                       return Row(
@@ -370,8 +367,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                         .checkIsSold(hardwares[index].id, uid),
                                     builder: (context, snapshotDos) {
                                       if (!snapshotDos.hasData) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
+                                        return Text("");
                                       }
 
                                       var elemento = snapshotDos.data.docs;
@@ -450,8 +446,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                   .checkIsWish(hardwares[index].id, uid),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
+                                  return Text("");
                                 }
                                 var deseos = snapshot.data.docs;
                                 return Row(

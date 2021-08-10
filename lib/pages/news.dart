@@ -53,7 +53,38 @@ class _NoticiasPageState extends State<NoticiasPage> {
                                           child: FittedBox(
                                               fit: BoxFit.fill,
                                               child: Image.network(
-                                                  noticia['img'])),
+                                                noticia['img'],
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Container(
+                                                    height: 100,
+                                                    width: 200,
+                                                    child: Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        // backgroundColor: Colors.red,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                kPrimaryColor),
+                                                        value: loadingProgress
+                                                                    .expectedTotalBytes !=
+                                                                null
+                                                            ? loadingProgress
+                                                                    .cumulativeBytesLoaded /
+                                                                loadingProgress
+                                                                    .expectedTotalBytes
+                                                            : null,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              )),
                                         ),
                                       ),
                                     ),

@@ -29,6 +29,7 @@ class _UDNoticiaPageState extends State<UDNoticiaPage> {
   TextEditingController nuevoDescripcionCtrl = new TextEditingController();
   TextEditingController nuevoURLCtrl = new TextEditingController();
   List<dynamic> hiddenChecked = [];
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -71,6 +72,7 @@ class _UDNoticiaPageState extends State<UDNoticiaPage> {
                 height: size.height * 0.65,
                 width: double.infinity,
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       Spacer(),
@@ -156,13 +158,15 @@ class _UDNoticiaPageState extends State<UDNoticiaPage> {
                               primary: kPrimaryColor,
                             ),
                             onPressed: () {
-                              FireStoreService().updateNew(
-                                  widget.id,
-                                  nuevoTituloCtrl.text.trim(),
-                                  nuevoDescripcionCtrl.text.trim(),
-                                  nuevoURLCtrl.text.trim(),
-                                  hiddenChecked[0]);
-                              Navigator.of(context).pop();
+                              if (_formKey.currentState.validate()) {
+                                FireStoreService().updateNew(
+                                    widget.id,
+                                    nuevoTituloCtrl.text.trim(),
+                                    nuevoDescripcionCtrl.text.trim(),
+                                    nuevoURLCtrl.text.trim(),
+                                    hiddenChecked[0]);
+                                Navigator.of(context).pop();
+                              }
                             },
                             child: Text("Editar titulo")),
                       )
