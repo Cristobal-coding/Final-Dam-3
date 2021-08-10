@@ -112,6 +112,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         authService
                                             .createUser(emailCtrl.text.trim(),
                                                 pass1Ctrl.text.trim())
+                                            .then((value) =>
+                                                Navigator.pop(context))
                                             .catchError((ex) {
                                           setState(() {
                                             errorText = ex.toString();
