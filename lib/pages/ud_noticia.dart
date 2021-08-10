@@ -41,12 +41,11 @@ class _UDNoticiaPageState extends State<UDNoticiaPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Borrar una noticia",
+          "Editar mi noticia",
           style: TextStyle(fontFamily: manuscritoFontFamily, fontSize: 40),
         ),
         leading: IconButton(
@@ -55,116 +54,178 @@ class _UDNoticiaPageState extends State<UDNoticiaPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            height: size.height * 0.6,
-            width: size.width * 0.85,
-            child: Form(
-              key: _formKey,
-              child: Expanded(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Ingrese un texto';
-                        }
-                        return null;
-                      },
-                      controller: nuevoTituloCtrl,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration:
-                          InputDecoration(labelText: 'Titulo de la noticia'),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (RegExp(
-                                r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)')
-                            .hasMatch(value)) {
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: double.infinity,
+            height: size.height * 0.8,
+            child: Column(children: [
+              Container(
+                  width: double.infinity,
+                  child: CustomPaint(painter: _HeaderPainter())),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    color: Colors.white),
+                height: size.height * 0.65,
+                width: double.infinity,
+                child: Form(
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Ingrese un texto';
+                          }
                           return null;
-                        } else {
-                          return 'Ingrese una url valida.';
-                        }
-                      },
-                      controller: nuevoURLCtrl,
-                      decoration:
-                          InputDecoration(labelText: 'Url de la imagen'),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        return null;
-                      },
-                      controller: nuevoDescripcionCtrl,
-                      maxLines: 3,
-                      maxLength: 90,
-                      decoration: InputDecoration(
-                          labelText: 'Descripcion de la noticia'),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Text(
-                          "Oculto",
-                          style: TextStyle(fontSize: 20),
+                        },
+                        controller: nuevoTituloCtrl,
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                        Checkbox(
-                          value: hiddenChecked[0],
-                          onChanged: (value) {
-                            setState(() {
-                              hiddenChecked[0] = value;
-                              print(hiddenChecked[0]);
-                            });
+                        decoration: InputDecoration(
+                          labelText: 'Titulo de la noticia',
+                          labelStyle: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: kPrimaryColor),
+                        ),
+                      ),
+                      TextFormField(
+                          validator: (value) {
+                            if (RegExp(
+                                    r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)')
+                                .hasMatch(value)) {
+                              return null;
+                            } else {
+                              return 'Ingrese una url valida.';
+                            }
                           },
-                        ),
-                      ],
-                    ),
-                    // ElevatedButton(
-                    //     onPressed: () {
-                    //       if (_formKey.currentState.validate()) {
-                    //         FireStoreService().updateNew(
-                    //             widget.id,
-                    //             nuevoTituloCtrl.text.trim(),
-                    //             nuevoDescripcionCtrl.text.trim(),
-                    //             nuevoURLCtrl.text.trim(),
-                    //             hiddenChecked[0]);
-                    //         Navigator.of(context).pop();
-                    //       }
-                    //     },
-                    //     child: Text("Editar titulo"))
-                  ],
+                          style: TextStyle(fontSize: 20),
+                          controller: nuevoURLCtrl,
+                          decoration: InputDecoration(
+                            labelText: 'Url de la imagen',
+                            labelStyle: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor),
+                          )),
+                      TextFormField(
+                          validator: (value) {
+                            return null;
+                          },
+                          style: TextStyle(fontSize: 20),
+                          controller: nuevoDescripcionCtrl,
+                          maxLines: 3,
+                          maxLength: 90,
+                          decoration: InputDecoration(
+                            labelText: 'Descripcion de la noticia',
+                            labelStyle: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor),
+                          )),
+                      Row(
+                        children: [
+                          Text(
+                            "Oculto",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Checkbox(
+                            value: hiddenChecked[0],
+                            onChanged: (value) {
+                              setState(() {
+                                hiddenChecked[0] = value;
+                                print(hiddenChecked[0]);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: StadiumBorder(),
+                              primary: kPrimaryColor,
+                            ),
+                            onPressed: () {
+                              FireStoreService().updateNew(
+                                  widget.id,
+                                  nuevoTituloCtrl.text.trim(),
+                                  nuevoDescripcionCtrl.text.trim(),
+                                  nuevoURLCtrl.text.trim(),
+                                  hiddenChecked[0]);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Editar titulo")),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
+              Spacer(
+                flex: 2,
+              ),
+              Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: StadiumBorder(),
+                      primary: kPrimaryColor,
+                    ),
+                    child: Text("Borrar noticia"),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                title: Text(
+                                    "Desear borrar la noticia ${widget.titulo}"),
+                                content: Text("Confirmar borrado."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      FireStoreService().borrarNew(widget.id);
+                                      Navigator.pop(context, 'OK');
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ));
+                    },
+                  )),
+            ]),
           ),
-          // Container(
-          //     child: ElevatedButton(
-          //   child: Text("Borrar noticia"),
-          //   onPressed: () {
-          //     showDialog(
-          //         context: context,
-          //         builder: (BuildContext context) => AlertDialog(
-          //               title:
-          //                   Text("Desear borrar la noticia ${widget.titulo}"),
-          //               content: Text("Confirmar borrado."),
-          //               actions: <Widget>[
-          //                 TextButton(
-          //                   onPressed: () => Navigator.pop(context, 'Cancel'),
-          //                   child: const Text('Cancel'),
-          //                 ),
-          //                 TextButton(
-          //                   onPressed: () {
-          //                     FireStoreService().borrarNew(widget.id);
-          //                     Navigator.pop(context, 'OK');
-          //                     Navigator.pop(context);
-          //                   },
-          //                   child: const Text('OK'),
-          //                 ),
-          //               ],
-          //             ));
-          //   },
-          // )),
-        ]),
+        ),
       ),
     );
   }
+}
+
+class _HeaderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint();
+    paint.color = kPrimaryColor;
+    paint.style = PaintingStyle.fill;
+
+    final path = new Path();
+    canvas.drawCircle(Offset(200, 200), 370, paint);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
