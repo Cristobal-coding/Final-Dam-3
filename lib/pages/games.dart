@@ -38,6 +38,7 @@ class _JuegosPageState extends State<JuegosPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
+      height: size.height,
       child: Column(
         children: [
           Container(
@@ -80,8 +81,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.network(
                                   juegos[index]['img'],
-                                  height: 320,
-                                  // width: double.infinity,
+                                  height: size.height * 0.359,
                                 ),
                               ),
                               Positioned(
@@ -163,7 +163,7 @@ class _JuegosPageState extends State<JuegosPage> {
                           Container(
                             width: 250,
                             height: 90,
-                            padding: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -316,7 +316,6 @@ class _JuegosPageState extends State<JuegosPage> {
           ), //Fin de los juego
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(8.0),
             height: size.height * 0.05,
             child: Text(
               'Articulos de Hardware',
@@ -329,8 +328,7 @@ class _JuegosPageState extends State<JuegosPage> {
           //Inicio del Hardware
           Container(
             width: double.infinity,
-            height: size.height * 0.22,
-            // color: Colors.red,
+            height: size.height * 0.19,
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: StreamBuilder(
               stream: FireStoreService().hardware(),
@@ -346,7 +344,7 @@ class _JuegosPageState extends State<JuegosPage> {
                     return Container(
                       width: 240,
                       margin: EdgeInsets.all(5.0),
-                      height: size.height * 0.15,
+                      height: size.height * 0.2,
                       // color: Colors.red,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,7 +356,7 @@ class _JuegosPageState extends State<JuegosPage> {
                                 child: Image.network(
                                   hardwares[index]['img'],
                                   width: 240,
-                                  height: 130,
+                                  height: 90,
                                   fit: BoxFit.fitWidth,
                                   // width: double.infinity,
                                 ),

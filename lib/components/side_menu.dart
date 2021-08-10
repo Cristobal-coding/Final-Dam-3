@@ -38,69 +38,78 @@ class _SideMenuState extends State<SideMenu> {
     Size size = MediaQuery.of(context).size;
 
     return SafeArea(
-      child: Drawer(
-        child: ListView(
-          children: [
-            Container(
-              height: (size.height) * 0.4,
-              child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40), bottomRight: Radius.circular(40)),
+        child: Container(
+          height: size.height * 0.63,
+          child: Drawer(
+            child: Column(
+              children: [
+                Container(
+                  height: (size.height) * 0.4,
+                  child: DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text("Menu de usuario",
+                                style: TextStyle(
+                                    fontFamily: titulosFontFamily,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: Colors.white)),
+                          ),
+                          Spacer(),
+                          Container(
+                              width: size.width * 0.75,
+                              child: FittedBox(
+                                child: Text(
+                                  " $emailUser ",
+                                  style: TextStyle(
+                                      fontSize: 23, color: Colors.white),
+                                ),
+                              )),
+                          Spacer(),
+                          CircleAvatar(
+                            radius: 70.0,
+                            backgroundImage:
+                                NetworkImage('https://via.placeholder.com/150'),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Spacer(),
+                        ],
+                      )),
+                ),
+                ListTile(
+                  onTap: () {
+                    MaterialPageRoute route = new MaterialPageRoute(
+                        builder: (context) => MisNoticiasPage(uid: userId));
+                    Navigator.push(context, route);
+                  },
+                  title: Text("Mis noticias"),
+                  leading: Icon(MdiIcons.newspaperVariantMultipleOutline),
+                ),
+                ListTile(
+                  onTap: () {},
+                  title: Text("Item"),
+                  leading: Icon(MdiIcons.sword),
+                ),
+                Expanded(
+                  child: ListTile(
+                    onTap: () {
+                      AuthService authService = new AuthService();
+                      authService.cerrarSesion();
+                    },
+                    title: Text("Cerrar Sesion"),
+                    leading: Icon(MdiIcons.logout),
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Text("Menu de usuario",
-                            style: TextStyle(
-                                fontFamily: titulosFontFamily,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                color: Colors.white)),
-                      ),
-                      Spacer(),
-                      Container(
-                          width: size.width * 0.75,
-                          child: FittedBox(
-                            child: Text(
-                              " $emailUser ",
-                              style:
-                                  TextStyle(fontSize: 23, color: Colors.white),
-                            ),
-                          )),
-                      Spacer(),
-                      CircleAvatar(
-                        radius: 70.0,
-                        backgroundImage:
-                            NetworkImage('https://via.placeholder.com/150'),
-                        backgroundColor: Colors.transparent,
-                      ),
-                      Spacer(),
-                    ],
-                  )),
+                )
+              ],
             ),
-            ListTile(
-              onTap: () {
-                MaterialPageRoute route = new MaterialPageRoute(
-                    builder: (context) => MisNoticiasPage(uid: userId));
-                Navigator.push(context, route);
-              },
-              title: Text("Mis noticias"),
-              leading: Icon(MdiIcons.newspaperVariantMultipleOutline),
-            ),
-            ListTile(
-              onTap: () {},
-              title: Text("Item"),
-              leading: Icon(MdiIcons.sword),
-            ),
-            ListTile(
-              onTap: () {
-                AuthService authService = new AuthService();
-                authService.cerrarSesion();
-              },
-              title: Text("Cerrar Sesion"),
-              leading: Icon(MdiIcons.logout),
-            )
-          ],
+          ),
         ),
       ),
     );

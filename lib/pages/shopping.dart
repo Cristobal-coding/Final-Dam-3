@@ -36,6 +36,7 @@ class _ShopPageState extends State<ShopPage> {
     Size size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
+      height: double.infinity,
       // height: size.height * 0.40,
       // color: Colors.blue,
       child: Column(
@@ -139,7 +140,7 @@ class _ShopPageState extends State<ShopPage> {
                 ],
               )),
           Container(
-            height: size.height * 0.32,
+            height: size.height * 0.3,
             // color: Colors.red,
             child: StreamBuilder(
               stream: FireStoreService().deseosByUid(uid),
@@ -168,7 +169,7 @@ class _ShopPageState extends State<ShopPage> {
                         }
                         var deseo = snapshotTwo.data.docs;
                         return Container(
-                          height: size.height * 0.25,
+                          height: size.height * 0.2,
                           margin: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
                             children: [
@@ -179,7 +180,7 @@ class _ShopPageState extends State<ShopPage> {
                                     child: Image.network(
                                       deseo[0]['img'],
                                       width: 200,
-                                      height: 220,
+                                      height: 185,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
