@@ -56,7 +56,7 @@ class _ShopPageState extends State<ShopPage> {
             ],
           )),
           Container(
-            height: size.height * 0.4,
+            height: size.height * 0.3,
             child: StreamBuilder(
               stream: FireStoreService().comprasByUid(uid),
               builder: (context, snapshot) {
@@ -140,7 +140,7 @@ class _ShopPageState extends State<ShopPage> {
                 ],
               )),
           Container(
-            height: size.height * 0.3,
+            height: size.height * 0.4,
             // color: Colors.red,
             child: StreamBuilder(
               stream: FireStoreService().deseosByUid(uid),
@@ -180,7 +180,7 @@ class _ShopPageState extends State<ShopPage> {
                                     child: Image.network(
                                       deseo[0]['img'],
                                       width: 200,
-                                      height: 185,
+                                      height: 220,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
